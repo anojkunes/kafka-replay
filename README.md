@@ -27,7 +27,7 @@ we can use it to investigate the messages and then replay them later using a UI 
 9. Consumes failed event by ms-kafka-replay 
 10. Process and runs some business logic on the failed events 
 11. Saves the failed event to Failed Messages DB. The model looks something like:
-```json
+```
 {
   "_id": {
     "partition": NumberInt(1),
@@ -82,7 +82,7 @@ we can use it to investigate the messages and then replay them later using a UI 
 
 ### Advantages:
 
-- We can be adjust the architecture and add more retry topics for individual intervals such as 30s, 60s, 90s (${TOPIC_NAME}__${SERVICE_NAME}__RETRY_30S, ${TOPIC_NAME}__${SERVICE_NAME}__RETRY_90S) …. so that they can retry after certain individual intervals before landing onto the Dead Letter Topics. However, if you are adding delayed topics, you have to make sure you that max.poll.interval.ms and few other kafka consumer setting is set appropriately enough otherwise you would have same events going on a loop without being acknowledged as it did not acknowledge a number of records in that interval time because somewhere  it was taking time. 
+- We can be adjust the architecture and add more retry topics for individual intervals such as 30s, 60s, 90s `(${TOPIC_NAME}__${SERVICE_NAME}__RETRY_30S, ${TOPIC_NAME}__${SERVICE_NAME}__RETRY_90S)` so that they can retry after certain individual intervals before landing onto the Dead Letter Topics. However, if you are adding delayed topics, you have to make sure you that max.poll.interval.ms and few other kafka consumer setting is set appropriately enough otherwise you would have same events going on a loop without being acknowledged as it did not acknowledge a number of records in that interval time because somewhere  it was taking time. 
 - Common Library can be created to set up configuration for consumers and Retry and Error Topics 
 - As each micro-services have individual Retry and Error topics, this would avoid having to receive duplicate messages and handle cases for that 
 - Its non blocking which means that main topic is not blocked whilst retrying and can proceed on to the next message 
@@ -112,7 +112,7 @@ As we are using Kafka Keys, we are already guaranteed for events ordering as it 
       2. FAILED => sends to Dead Letter Topic and update the event for failed to DB
 
 The model looks something like:
-```json
+```
 {
 "_id": {
 "partition": NumberInt(0),
@@ -144,7 +144,7 @@ The model looks something like:
 13. Consumes failed event by ms-kafka-replay
 14. Process and runs some business logic on the failed events 
 15. Saves the failed event to Failed Messages DB. The model looks something like:
-```json
+```
 {
 "_id": {
 "partition": NumberInt(1),
